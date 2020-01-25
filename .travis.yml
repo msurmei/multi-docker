@@ -3,16 +3,16 @@ services:
     - docker
 
 before_install:
-    - docker build -t sumro/react-test -f ./client/Dockerfile.dev ./client
+    - docker build -t msurmei/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true sumro/react-test npm test
+    - docker run -e CI=true msurmei/react-test npm test
 
 after_success:
-    - docker build -t sumro/multi-client ./client
-    - docker build -t sumro/multi-nginx ./nginx
-    - docker build -t sumro/multi-server ./server
-    - docker build -t sumro/multi-worker ./worker
+    - docker build -t msurmei/multi-client ./client
+    - docker build -t msurmei/multi-nginx ./nginx
+    - docker build -t msurmei/multi-server ./server
+    - docker build -t msurmei/multi-worker ./worker
 
     # docker login
 
@@ -20,7 +20,7 @@ after_success:
 
     # Take images push to docker hub
 
-    - docker push sumro/multi-client
-    - docker push sumro/multi-nginx
-    - docker push sumro/multi-server
-    - docker push sumro/multi-worker
+    - docker push msurmei/multi-client
+    - docker push msurmei/multi-nginx
+    - docker push msurmei/multi-server
+    - docker push msurmei/multi-worker
