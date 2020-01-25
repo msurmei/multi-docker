@@ -1,0 +1,26 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t sumro/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true sumro/react-test npm test
+
+after_success:
+    - docker build -t sumro/multi-client ./client
+    - docker build -t sumro/multi-nginx ./nginx
+    - docker build -t sumro/multi-server ./server
+    - docker build -t sumro/multi-worker ./worker
+
+    # docker login
+
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Take images push to docker hub
+
+    - docker push sumro/multi-client
+    - docker push sumro/multi-nginx
+    - docker push sumro/multi-server
+    - docker push sumro/multi-worker
